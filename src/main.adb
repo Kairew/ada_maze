@@ -1,8 +1,6 @@
-with Board;
-with STM32.Board;
+with Draw;
 
 procedure Main is
-
 begin
-   null;
+   Draw.DrawLine;
 end Main;
