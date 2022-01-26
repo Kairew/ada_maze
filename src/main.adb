@@ -1,6 +1,6 @@
-with Draw;
+with Game;
 
 procedure Main is
 begin
-   Draw.DrawLine;
+    Game.Play;
 end Main;

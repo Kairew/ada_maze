@@ -45,9 +45,9 @@ with BMP_Fonts;
 with LCD_Std_Out;
 with Map; use Map;
 
-package body Draw is
+package body Game is
 
-    procedure DrawLine
+    procedure Play 
     is
         BG : constant Bitmap_Color := (Alpha => 255, others => 64);
 
@@ -63,7 +63,6 @@ package body Draw is
             Display.Hidden_Buffer (1).Fill;
 
             LCD_Std_Out.Clear_Screen;
-            LCD_Std_Out.Put_Line ("Ada Maze");
 
             Display.Update_Layer (1, Copy_Back => True);
         end Clear;
@@ -82,7 +81,7 @@ package body Draw is
         --  Initialize button
         User_Button.Initialize;
 
-        LCD_Std_Out.Set_Font (BMP_Fonts.Font16x24);
+        -- LCD_Std_Out.Set_Font (BMP_Fonts.Font16x24);
         LCD_Std_Out.Current_Background_Color := BG;
 
         --  Clear LCD (set background)
@@ -92,5 +91,5 @@ package body Draw is
             DrawMap(M);
         end loop;
 
-    end DrawLine;
-end Draw;
+    end Play;
+end Game;
