@@ -43,12 +43,12 @@ with HAL.Touch_Panel;       use HAL.Touch_Panel;
 with STM32.User_Button;     use STM32;
 with BMP_Fonts;
 with LCD_Std_Out;
+with Map; use Map;
 
 package body Draw is
 
-
-procedure DrawLine
-is
+    procedure DrawLine
+    is
         BG : constant Bitmap_Color := (Alpha => 255, others => 64);
 
         procedure Clear;
@@ -71,30 +71,7 @@ is
         type Mode is (Drawing_Mode, Bitmap_Showcase_Mode);
 
         Current_Mode : Mode := Drawing_Mode;
-
-        type isWall is range 0 .. 1;
-      type Row is array (1 .. 12) of isWall;
-      type Map is array (1 .. 16) of Row;
-
-      M : Map := ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1),
-                  (1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1),
-                  (1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1),
-                  (1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1),
-                  (1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                  (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
-
     begin
-
         --  Initialize LCD
         Display.Initialize;
         Display.Initialize_Layer (1, ARGB_8888);
@@ -112,18 +89,7 @@ is
         Clear;
 
         loop
-            Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Brown);
-            -- Draw map
-            for I in 1 .. 12 loop
-                for J in 1 .. 16 loop
-                    if M(J)(I) = 0 then
-                        Fill_Rect (Display.Hidden_Buffer (1).all,
-                            Area => (((I - 1) * 20, (J - 1) * 20), 20, 20));
-                    end if;
-                end loop;
-            end loop;
-
-            Display.Update_Layer (1, Copy_Back => True);
+            DrawMap(M);
         end loop;
 
     end DrawLine;
