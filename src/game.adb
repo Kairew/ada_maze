@@ -88,7 +88,7 @@ package body Game is
         Clear;
 
         loop
-            DrawMap(M);
+            DrawMap(M_Test);
         end loop;
 
     end Play;
