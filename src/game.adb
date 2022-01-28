@@ -44,7 +44,7 @@ with STM32.User_Button;     use STM32;
 with BMP_Fonts;
 with LCD_Std_Out;
 with Map; use Map;
-
+with ball;
 package body Game is
 
     procedure Play 
@@ -69,7 +69,8 @@ package body Game is
 
         type Mode is (Drawing_Mode, Bitmap_Showcase_Mode);
 
-        Current_Mode : Mode := Drawing_Mode;
+      Current_Mode : Mode := Drawing_Mode;
+      ballPos : Point;
     begin
         --  Initialize LCD
         Display.Initialize;
@@ -86,9 +87,12 @@ package body Game is
 
         --  Clear LCD (set background)
         Clear;
-
+      ballPos := ball.getBallPos;
         loop
-            DrawMap(M_Test);
+         DrawMap(M_Test);
+         DrawBall(M_Test);
+         ballPos := ((ballPos.X + 1) mod 220, ballPos.Y);
+         ball.setBallPos(ballPos);
         end loop;
 
     end Play;
