@@ -81,5 +81,6 @@ package Map is
 
    procedure DrawStart(I : in Integer; J : in Integer);
    procedure DrawFinish(I : in Integer; J : in Integer);
+   procedure DrawBall(M : in Map);
 
 end Map;
