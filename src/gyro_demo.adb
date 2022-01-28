@@ -17,14 +17,13 @@ with L3GD20; use L3GD20;
 
 package body gyro_demo is
 
+   x, y, z : Float:= 0.0;
+   x_ang, y_ang, z_ang : Float := 0.0;
+   Delta_Time : Time_Span;
+   Current_Time, Prev_Time : Time;
+
    procedure Gyro_Init is
 
-      Axes      : L3GD20.Angle_Rates;
-      Last_Axes : L3GD20.Angle_Rates;
-      x, y, z : Float:= 0.0;
-      x_ang, y_ang, z_ang : Float := 0.0;
-      Delta_Time : Time_Span;
-      Current_Time, Prev_Time : Time;
 
       procedure Configure_Gyro;
       --  Configures the on-board gyro chip
@@ -87,22 +86,11 @@ package body gyro_demo is
    begin
       delay 1.0;
       Gyro_Init;
-      LCD_Std_Out.Put (0, 0, "X/Y/Z");
-      loop
-         Gyro.Get_Raw_Angle_Rates (Axes);
-         LCD_Std_Out.Put (0, 60, Axes.X'Img & "  ");
-         LCD_Std_Out.Put (0, 120, Axes.Y'Img & "  ");
-         LCD_Std_Out.Put (0, 180, Axes.Z'Img & "  ");
-         delay 0.1;
-      end loop;
-   end Gyro_Task;
-begin
-   Axes := (0, 0, 0);
       Prev_Time := Clock;
 
-      loop
-         Gyro.Get_Raw_Angle_Rates (Axes);
-         x := Float(Axes.X) * 2000.0 / 32768.0;
+   loop
+      Gyro.Get_Raw_Angle_Rates (Axes);
+      x := Float(Axes.X) * 2000.0 / 32768.0;
          y := Float(Axes.Y) * 2000.0 / 32768.0;
          z := Float(Axes.Z) * 2000.0 / 32768.0;
 
@@ -129,11 +117,14 @@ begin
          else
             LCD_Std_Out.Put(0, 220, "Neutral");
          end if;
-         Last_Axes := Axes;
+
 
          Prev_Time := Current_Time;
+         delay 0.1;
       end loop;
-   end Gyro_test;
+   end Gyro_Task;
 
+begin
+   Axes := (0, 0, 0);
 
 end gyro_demo;
