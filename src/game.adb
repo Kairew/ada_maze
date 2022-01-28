@@ -91,7 +91,7 @@ package body Game is
         loop
          DrawMap(M_Test);
          DrawBall(M_Test);
-         ballPos := ((ballPos.X + 1) mod 220, ballPos.Y);
+         ballPos := ((ballPos.X + 1) mod 220, (ballPos.Y + 1) mod 340);
          ball.setBallPos(ballPos);
         end loop;
 
