@@ -9,6 +9,7 @@ with STM32.Board;  use STM32.Board;
 with STM32.GPIO; use STM32.GPIO;
 with STM32.EXTI; use STM32.EXTI;
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Real_Time; use Ada.Real_Time;
 
 with LCD_Std_Out;
 
@@ -18,7 +19,12 @@ package body gyro_demo is
 
    procedure Gyro_Init is
 
---      Last_Axes : L3GD20.Angle_Rates;
+      Axes      : L3GD20.Angle_Rates;
+      Last_Axes : L3GD20.Angle_Rates;
+      x, y, z : Float:= 0.0;
+      x_ang, y_ang, z_ang : Float := 0.0;
+      Delta_Time : Time_Span;
+      Current_Time, Prev_Time : Time;
 
       procedure Configure_Gyro;
       --  Configures the on-board gyro chip
@@ -92,4 +98,42 @@ package body gyro_demo is
    end Gyro_Task;
 begin
    Axes := (0, 0, 0);
+      Prev_Time := Clock;
+
+      loop
+         Gyro.Get_Raw_Angle_Rates (Axes);
+         x := Float(Axes.X) * 2000.0 / 32768.0;
+         y := Float(Axes.Y) * 2000.0 / 32768.0;
+         z := Float(Axes.Z) * 2000.0 / 32768.0;
+
+         Current_Time := Clock;
+
+         Delta_Time := Current_Time - Prev_Time;
+         if x < -10.0 or x > 10.0 then
+            x_ang := x_ang + x * Float(To_Duration(Delta_Time));
+         end if;
+         if y < -10.0 or y > 10.0 then
+            y_ang := y_ang + y * Float(To_Duration(Delta_Time));
+         end if;
+
+         LCD_Std_Out.Put (0, 60, Integer(x_ang)'Img & "  ");
+         LCD_Std_Out.Put (0, 120, Integer(y_ang)'Img & "  ");
+         if x_ang > 150.0 and y_ang > -100.0 and y_ang < 100.0 then
+            LCD_Std_Out.Put(0, 220, "Down");
+         elsif x_ang < -150.0 and y_ang > -100.0 and y_ang < 100.0 then
+            LCD_Std_Out.Put(0, 220, "Up");
+         elsif y_ang > 150.0 and x_ang > -100.0 and x_ang < 100.0 then
+            LCD_Std_Out.Put(0, 220, "Right");
+         elsif y_ang < -150.0 and x_ang > -100.0 and x_ang < 100.0 then
+            LCD_Std_Out.Put(0, 220, "Left");
+         else
+            LCD_Std_Out.Put(0, 220, "Neutral");
+         end if;
+         Last_Axes := Axes;
+
+         Prev_Time := Current_Time;
+      end loop;
+   end Gyro_test;
+
+
 end gyro_demo;
