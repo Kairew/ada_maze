@@ -13,7 +13,7 @@ with gyro_demo;
 
 procedure Main is
 
-   BG : Bitmap_Color := (Alpha => 255, others => 0);
+   BG : Bitmap_Color := (Alpha => 255, others => 64);
 begin
 
    --  Initialize LCD
@@ -32,10 +32,9 @@ begin
    LCD_Std_Out.Clear_Screen;
 
 
-   gyro_demo.Gyro_test;
-
    loop
-         Display.Update_Layer (1, Copy_Back => True);
+      Display.Update_Layer (1, Copy_Back => True);
+      delay 1.0;
    end loop;
 
 end Main;

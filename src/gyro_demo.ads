@@ -13,6 +13,9 @@ with LCD_Std_Out;
 
 with L3GD20;  use L3GD20;
 package gyro_demo is
-
-procedure Gyro_test ;
+   pragma Elaborate_Body;
+   procedure Gyro_init;
+   task Gyro_Task;
+private
+   Axes      : L3GD20.Angle_Rates;
 end gyro_demo;

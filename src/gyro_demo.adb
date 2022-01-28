@@ -16,10 +16,9 @@ with L3GD20; use L3GD20;
 
 package body gyro_demo is
 
-   procedure Gyro_test is
+   procedure Gyro_Init is
 
-      Axes      : L3GD20.Angle_Rates;
-      Last_Axes : L3GD20.Angle_Rates;
+--      Last_Axes : L3GD20.Angle_Rates;
 
       procedure Configure_Gyro;
       --  Configures the on-board gyro chip
@@ -39,10 +38,7 @@ package body gyro_demo is
          --  every board has a gyro. The F429 Discovery does, for example, but
          --  the F4 Discovery does not.
          STM32.Board.Initialize_Gyro_IO;
-      exception
-             when P : Program_Error =>
-            LCD_Std_Out.Put_Line(Exception_Message(P));
-            raise;
+
          Gyro.Reset;
 
          Gyro.Configure
@@ -71,22 +67,29 @@ package body gyro_demo is
          Configure_Trigger (MEMS_INT2, Interrupt_Rising_Edge);
       end Configure_Gyro_Interrupt;
 
+
    begin
       Configure_Gyro;
 
       Configure_Gyro_Interrupt;
 
       Gyro.Set_FIFO_Mode (L3GD20_Stream_Mode);
-      LCD_Std_Out.Put (0, 0, "X/Y/Z");
-      Gyro.Get_Raw_Angle_Rates (Last_Axes);
 
+   end Gyro_init;
+
+   task body Gyro_Task is
+   begin
+      delay 1.0;
+      Gyro_Init;
+      LCD_Std_Out.Put (0, 0, "X/Y/Z");
       loop
          Gyro.Get_Raw_Angle_Rates (Axes);
-         LCD_Std_Out.Put (60, 0, Axes.X'Img & "  ");
-         LCD_Std_Out.Put (120, 0, Axes.Y'Img & "  ");
-         LCD_Std_Out.Put (180, 0, Axes.Z'Img & "  ");
-         Last_Axes := Axes;
+         LCD_Std_Out.Put (0, 60, Axes.X'Img & "  ");
+         LCD_Std_Out.Put (0, 120, Axes.Y'Img & "  ");
+         LCD_Std_Out.Put (0, 180, Axes.Z'Img & "  ");
+         delay 0.1;
       end loop;
-   end Gyro_test;
-
+   end Gyro_Task;
+begin
+   Axes := (0, 0, 0);
 end gyro_demo;
