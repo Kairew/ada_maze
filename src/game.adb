@@ -70,7 +70,7 @@ package body Game is
         type Mode is (Drawing_Mode, Bitmap_Showcase_Mode);
 
       Current_Mode : Mode := Drawing_Mode;
-      ballPos : Point;
+      
     begin
         --  Initialize LCD
         Display.Initialize;
@@ -86,13 +86,11 @@ package body Game is
         LCD_Std_Out.Current_Background_Color := BG;
 
         --  Clear LCD (set background)
-        Clear;
-      ballPos := ball.getBallPos;
+      Clear;
         loop
          DrawMap(M_Test);
          DrawBall(M_Test);
-         ballPos := ((ballPos.X + 1) mod 220, (ballPos.Y + 1) mod 340);
-         ball.setBallPos(ballPos);
+         delay 0.1;
         end loop;
 
     end Play;

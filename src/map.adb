@@ -2,7 +2,7 @@ with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
 with LCD_Std_Out;
-with ball;
+with ball; use ball;
 package body Map is
 
    function isUnique(M : Map; T : TileType) return Boolean
@@ -84,8 +84,8 @@ package body Map is
    procedure DrawBall(M : in Map) is
       ballPos : Point;
    begin
-      ballPos := ball.getBallPos;
-
+      ballPos := ball.Ball.getBallPos;
+      --LCD_Std_Out.Put(60, 20, ball.Ball.getBallPos.X'Img & " " & ball.Ball.getBallPos.Y'Img);
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Green);
       Fill_Circle(Display.Hidden_Buffer(1).all, ballPos, 10);
       Display.Update_Layer (1, Copy_Back => False);

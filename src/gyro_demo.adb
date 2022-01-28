@@ -10,11 +10,11 @@ with STM32.GPIO; use STM32.GPIO;
 with STM32.EXTI; use STM32.EXTI;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Real_Time; use Ada.Real_Time;
-
+with HAL.Bitmap;            use HAL.Bitmap;
 with LCD_Std_Out;
 
 with L3GD20; use L3GD20;
-
+with ball; use ball;
 package body gyro_demo is
 
    x, y, z : Float:= 0.0;
@@ -83,13 +83,16 @@ package body gyro_demo is
    end Gyro_init;
 
    task body Gyro_Task is
+      ballPos : Point;
    begin
       delay 1.0;
       Gyro_Init;
       Prev_Time := Clock;
 
+
    loop
-      Gyro.Get_Raw_Angle_Rates (Axes);
+         Gyro.Get_Raw_Angle_Rates (Axes);
+         ballPos := ball.Ball.getBallPos;
       x := Float(Axes.X) * 2000.0 / 32768.0;
          y := Float(Axes.Y) * 2000.0 / 32768.0;
          z := Float(Axes.Z) * 2000.0 / 32768.0;
@@ -104,23 +107,28 @@ package body gyro_demo is
             y_ang := y_ang + y * Float(To_Duration(Delta_Time));
          end if;
 
-         LCD_Std_Out.Put (0, 60, Integer(x_ang)'Img & "  ");
-         LCD_Std_Out.Put (0, 120, Integer(y_ang)'Img & "  ");
-         if x_ang > 150.0 and y_ang > -100.0 and y_ang < 100.0 then
-            LCD_Std_Out.Put(0, 220, "Down");
-         elsif x_ang < -150.0 and y_ang > -100.0 and y_ang < 100.0 then
-            LCD_Std_Out.Put(0, 220, "Up");
-         elsif y_ang > 150.0 and x_ang > -100.0 and x_ang < 100.0 then
-            LCD_Std_Out.Put(0, 220, "Right");
-         elsif y_ang < -150.0 and x_ang > -100.0 and x_ang < 100.0 then
-            LCD_Std_Out.Put(0, 220, "Left");
+         --LCD_Std_Out.Put (60, 0, Integer(x_ang)'Img & "  ");
+         --LCD_Std_Out.Put (120, 0, Integer(y_ang)'Img & "  ");
+         if x_ang > 25.0 and y_ang > -20.0 and y_ang < 20.0 then
+            --LCD_Std_Out.Put(180, 0, "Down");
+            ball.Ball.setBallPos((ballPos.X, ballPos.Y + 1));
+         elsif x_ang < -25.0 and y_ang > -20.0 and y_ang < 20.0 then
+            --LCD_Std_Out.Put(180, 0, "Up");
+            ball.Ball.setBallPos((ballPos.X, ballPos.Y - 1));
+         elsif y_ang > 25.0 and x_ang > -20.0 and x_ang < 20.0 then
+            --LCD_Std_Out.Put(180, 0, "Right");
+            ball.Ball.setBallPos((ballPos.X + 1, ballPos.Y));
+         elsif y_ang < -25.0 and x_ang > -20.0 and x_ang < 20.0 then
+            --LCD_Std_Out.Put(180, 0, "Left");
+            ball.Ball.setBallPos((ballPos.X - 1, ballPos.Y));
          else
-            LCD_Std_Out.Put(0, 220, "Neutral");
+            --LCD_Std_Out.Put(180, 0, "Neutral");
+            ball.Ball.setBallPos((ballPos.X, ballPos.Y));
          end if;
 
 
          Prev_Time := Current_Time;
-         delay 0.1;
+         delay 0.01;
       end loop;
    end Gyro_Task;
 

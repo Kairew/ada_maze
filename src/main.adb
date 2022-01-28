@@ -8,32 +8,16 @@ with HAL.Bitmap;            use HAL.Bitmap;
 pragma Warnings (Off, "referenced");
 with BMP_Fonts;
 with LCD_Std_Out;
-
+with Game;
 with gyro_demo;
 
 procedure Main is
-
-   BG : Bitmap_Color := (Alpha => 255, others => 64);
 begin
 
-   --  Initialize LCD
-   Display.Initialize;
-   Display.Initialize_Layer (1, ARGB_8888);
-
-   LCD_Std_Out.Set_Font (BMP_Fonts.Font12x12);
-   LCD_Std_Out.Current_Background_Color := BG;
-
-   --  Clear LCD (set background)
-   Display.Hidden_Buffer (1).Set_Source (BG);
-   Display.Hidden_Buffer (1).Fill;
-
-   LCD_Std_Out.Clear_Screen;
-   Display.Update_Layer (1, Copy_Back => True);
-   LCD_Std_Out.Clear_Screen;
-
+   Game.Play;
 
    loop
-      Display.Update_Layer (1, Copy_Back => True);
+      --Display.Update_Layer (1, Copy_Back => True);
       delay 1.0;
    end loop;
 
