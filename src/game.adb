@@ -70,6 +70,7 @@ package body Game is
         type Mode is (Drawing_Mode, Bitmap_Showcase_Mode);
 
       Current_Mode : Mode := Drawing_Mode;
+      mapList : MapArray := (M_H, M_Test);
     begin
         --  Initialize LCD
         Display.Initialize;
@@ -86,15 +87,27 @@ package body Game is
 
         --  Clear LCD (set background)
       Clear;
-        loop
-         DrawMap(M_Test);
-         DrawBall(M_Test);
-         exit when ball.Ball.isOnFinish;
-         delay 0.1;
+      
+      for l in mapList'Range loop
+         currMap := mapList(l);
+         ball.Ball.setBallPos(getStartPos(mapList(l)));
+         ball.Ball.setFinish(False);
+         
+         LCD_Std_Out.Put(50, 50, "Niveau " & l'Img);
+         delay 3.0;
+         Clear;
+         loop
+            DrawMap(mapList(l));
+            DrawBall(mapList(l));
+            exit when ball.Ball.isOnFinish;
+            delay 0.1;
+         end loop;
+         Clear;
+      
       end loop;
       
       Clear;
-      LCD_Std_Out.Put_Line("Bravo bg");
+      LCD_Std_Out.Put(100, 50, "Fin");
 
     end Play;
 end Game;

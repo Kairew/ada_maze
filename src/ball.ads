@@ -6,9 +6,10 @@ package ball is
       procedure setBallPos(pos : in Point);
       
       function isOnFinish return Boolean;
+      procedure setFinish(state : in Boolean);
    private
       ballPos : Point;
-      finish : Boolean := False;
+      finish : Boolean;
    end Ball;
    
 

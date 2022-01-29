@@ -9,11 +9,13 @@ package body ball is
    end getBallPos;
    
       procedure setBallPos(pos : in Point) is
+         x : Integer := (((pos.X / 20) ) mod 12) + 1;
+         y : Integer := (((pos.Y / 20) ) mod 16) + 1;
       begin
-         if M_Test((pos.Y / 20) + 1)((pos.X / 20) + 1) /= W then
-            ballPos := ((pos.X mod 220), (pos.Y mod 340));
+         if currMap(y)(x) /= W then
+            ballPos := ((pos.X mod 240), (pos.Y mod 320));
          end if;
-         if M_Test((pos.Y / 20) + 1)((pos.X / 20) + 1) = F then
+         if currMap(y)(x) = F then
             finish := True;
          end if;
       end setBallPos;
@@ -23,7 +25,13 @@ package body ball is
          return finish;
       end isOnFinish;
       
+      procedure setFinish(state : in Boolean) is
+      begin
+         finish := state;
+      end setFinish;
+      
    end Ball;
 begin
-   Ball.setBallPos(getStartPos(M_Test));
+   Ball.setBallPos(getStartPos(currMap));
+   Ball.setFinish(False);
 end ball;
