@@ -70,7 +70,7 @@ package body Game is
         type Mode is (Drawing_Mode, Bitmap_Showcase_Mode);
 
       Current_Mode : Mode := Drawing_Mode;
-      mapList : MapArray := (M_H, M_Test);
+      mapList : MapArray := (M_H, M_Test, M_Hole);
     begin
         --  Initialize LCD
         Display.Initialize;

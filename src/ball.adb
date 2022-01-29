@@ -15,6 +15,9 @@ package body ball is
          if currMap(y)(x) /= W then
             ballPos := ((pos.X mod 240), (pos.Y mod 320));
          end if;
+         if currMap(y)(x) = H then
+            ballPos := getStartPos(currMap);
+         end if;         
          if currMap(y)(x) = F then
             finish := True;
          end if;

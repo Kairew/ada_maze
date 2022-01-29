@@ -4,11 +4,11 @@ package Map is
    -- P : Path
    -- S : Start
    -- F : Finish
-   type TileType is (W, P, S, F);
+   type TileType is (W, P, H, S, F);
    type Row is array (1 .. 12) of TileType;
    type Map is array (1 .. 16) of Row;
 
-   type MapArray is array (1 .. 2) of Map;
+   type MapArray is array (1 .. 3) of Map;
 
 
    M_Test : constant Map := ((W, W, W, W, W, W, W, W, W, W, W, W),
@@ -27,6 +27,24 @@ package Map is
                              (W, P, P, P, P, P, W, P, P, P, P, W),
                              (W, S, P, P, P, P, W, F, P, P, P, W),
                              (W, W, W, W, W, W, W, W, W, W, W, W));
+
+   M_Hole : constant Map := ((W, W, H, W, W, W, W, W, W, W, W, W),
+                             (W, W, P, P, P, P, H, P, P, P, H, W),
+                             (W, W, P, P, H, P, P, P, H, P, F, W),
+                             (W, H, P, H, W, W, W, W, W, W, W, W),
+                             (W, H, P, H, W, W, W, W, W, W, W, W),
+                             (W, W, P, P, P, W, W, W, W, W, W, W),
+                             (W, W, P, P, P, P, P, W, W, W, W, W),
+                             (W, W, W, W, W, P, P, P, H, P, P, W),
+                             (W, W, W, W, W, H, P, P, P, P, P, W),
+                             (W, W, W, W, W, W, W, W, W, W, P, W),
+                             (W, W, W, W, W, W, W, W, W, W, P, W),
+                             (W, W, W, P, P, P, P, P, H, W, P, W),
+                             (W, W, W, P, P, W, H, P, W, W, P, W),
+                             (W, P, P, P, P, W, H, P, P, P, P, W),
+                             (W, S, P, P, P, W, W, W, W, W, W, W),
+                             (W, W, W, W, W, W, W, W, W, W, W, W));
+
 
     M_H : constant Map := ((W, W, W, W, W, P, W, W, W, W, W, W),
                            (W, W, W, W, W, P, W, W, W, W, W, W),

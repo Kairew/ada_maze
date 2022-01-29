@@ -68,9 +68,13 @@ package body Map is
       -- Draw map
       for I in 1 .. 12 loop
          for J in 1 .. 16 loop
-            Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Brown);
+
             case M(J)(I) is
-               when W => Fill_Rect (Display.Hidden_Buffer (1).all,
+               when W =>Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Brown);
+                  Fill_Rect (Display.Hidden_Buffer (1).all,
+                                    Area => (((I - 1) * 20, (J - 1) * 20), 20, 20));
+               when H => Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
+                  Fill_Rect (Display.Hidden_Buffer (1).all,
                                     Area => (((I - 1) * 20, (J - 1) * 20), 20, 20));
                when S => DrawStart(I - 1, J - 1);
                when F => DrawFinish(I - 1, J - 1);
