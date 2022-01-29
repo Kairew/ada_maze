@@ -21,6 +21,8 @@ package body gyro_demo is
    x_ang, y_ang, z_ang : Float := 0.0;
    Delta_Time : Time_Span;
    Current_Time, Prev_Time : Time;
+   type Directions is (Down, Up, Right, Left, Neutral);
+   Direction: Directions := Neutral;
 
    procedure Gyro_Init is
 
@@ -93,37 +95,74 @@ package body gyro_demo is
    loop
          Gyro.Get_Raw_Angle_Rates (Axes);
          ballPos := ball.Ball.getBallPos;
-      x := Float(Axes.X) * 2000.0 / 32768.0;
+         x := Float(Axes.X) * 2000.0 / 32768.0;
          y := Float(Axes.Y) * 2000.0 / 32768.0;
          z := Float(Axes.Z) * 2000.0 / 32768.0;
 
-         Current_Time := Clock;
+         if x > 75.0 then
+            if Direction = Up then
+               Direction := Neutral;
+            else
+               Direction := Down;
+            end if;
+         elsif x < - 75.0 then
+            if Direction = Down then
+               Direction := Neutral;
+            else
+               Direction := Up;
+            end if;
+         elsif y > 75.0 then
+            if Direction = Left then
+               Direction := Neutral;
+            else
+               Direction := Right;
+            end if;
+         elsif y < - 75.0 then
+            if Direction = Right then
+               Direction := Neutral;
+            else
+               Direction := Left;
+            end if;
+         end if;
 
-         Delta_Time := Current_Time - Prev_Time;
-         if x < -10.0 or x > 10.0 then
-            x_ang := x_ang + x * Float(To_Duration(Delta_Time));
-         end if;
-         if y < -10.0 or y > 10.0 then
-            y_ang := y_ang + y * Float(To_Duration(Delta_Time));
-         end if;
+         case Direction is
+            when Down => ball.Ball.setBallPos((ballPos.X, ballPos.Y + 1));
+            when Up => ball.Ball.setBallPos((ballPos.X, ballPos.Y - 1));
+            when Right => ball.Ball.setBallPos((ballPos.X + 1, ballPos.Y));
+            when Left => ball.Ball.setBallPos((ballPos.X - 1, ballPos.Y));
+            when Neutral => null;
+         end case;
+
+
+         if (False) then
+            Current_Time := Clock;
+
+            Delta_Time := Current_Time - Prev_Time;
+            if x < -10.0 or x > 10.0 then
+               x_ang := x_ang + x * Float(To_Duration(Delta_Time));
+            end if;
+            if y < -10.0 or y > 10.0 then
+               y_ang := y_ang + y * Float(To_Duration(Delta_Time));
+            end if;
 
          --LCD_Std_Out.Put (60, 0, Integer(x_ang)'Img & "  ");
          --LCD_Std_Out.Put (120, 0, Integer(y_ang)'Img & "  ");
-         if x_ang > 25.0 and y_ang > -20.0 and y_ang < 20.0 then
-            --LCD_Std_Out.Put(180, 0, "Down");
-            ball.Ball.setBallPos((ballPos.X, ballPos.Y + 1));
-         elsif x_ang < -25.0 and y_ang > -20.0 and y_ang < 20.0 then
-            --LCD_Std_Out.Put(180, 0, "Up");
-            ball.Ball.setBallPos((ballPos.X, ballPos.Y - 1));
-         elsif y_ang > 25.0 and x_ang > -20.0 and x_ang < 20.0 then
-            --LCD_Std_Out.Put(180, 0, "Right");
-            ball.Ball.setBallPos((ballPos.X + 1, ballPos.Y));
-         elsif y_ang < -25.0 and x_ang > -20.0 and x_ang < 20.0 then
-            --LCD_Std_Out.Put(180, 0, "Left");
-            ball.Ball.setBallPos((ballPos.X - 1, ballPos.Y));
-         else
-            --LCD_Std_Out.Put(180, 0, "Neutral");
-            ball.Ball.setBallPos((ballPos.X, ballPos.Y));
+            if x_ang > 25.0 and y_ang > -20.0 and y_ang < 20.0 then
+               --LCD_Std_Out.Put(180, 0, "Down");
+               ball.Ball.setBallPos((ballPos.X, ballPos.Y + 1));
+            elsif x_ang < -25.0 and y_ang > -20.0 and y_ang < 20.0 then
+               --LCD_Std_Out.Put(180, 0, "Up");
+               ball.Ball.setBallPos((ballPos.X, ballPos.Y - 1));
+            elsif y_ang > 25.0 and x_ang > -20.0 and x_ang < 20.0 then
+               --LCD_Std_Out.Put(180, 0, "Right");
+               ball.Ball.setBallPos((ballPos.X + 1, ballPos.Y));
+            elsif y_ang < -25.0 and x_ang > -20.0 and x_ang < 20.0 then
+               --LCD_Std_Out.Put(180, 0, "Left");
+               ball.Ball.setBallPos((ballPos.X - 1, ballPos.Y));
+            else
+               --LCD_Std_Out.Put(180, 0, "Neutral");
+               ball.Ball.setBallPos((ballPos.X, ballPos.Y));
+            end if;
          end if;
 
 
