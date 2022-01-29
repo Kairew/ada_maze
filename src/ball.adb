@@ -13,8 +13,17 @@ package body ball is
          if M_Test((pos.Y / 20) + 1)((pos.X / 20) + 1) /= W then
             ballPos := ((pos.X mod 220), (pos.Y mod 340));
          end if;
-   end setBallPos;
+         if M_Test((pos.Y / 20) + 1)((pos.X / 20) + 1) = F then
+            finish := True;
+         end if;
+      end setBallPos;
+      
+      function isOnFinish return Boolean is
+      begin
+         return finish;
+      end isOnFinish;
+      
    end Ball;
 begin
-   Ball.setBallPos((20, 20));
+   Ball.setBallPos(getStartPos(M_Test));
 end ball;

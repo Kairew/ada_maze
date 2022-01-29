@@ -70,7 +70,6 @@ package body Game is
         type Mode is (Drawing_Mode, Bitmap_Showcase_Mode);
 
       Current_Mode : Mode := Drawing_Mode;
-      
     begin
         --  Initialize LCD
         Display.Initialize;
@@ -90,8 +89,12 @@ package body Game is
         loop
          DrawMap(M_Test);
          DrawBall(M_Test);
+         exit when ball.Ball.isOnFinish;
          delay 0.1;
-        end loop;
+      end loop;
+      
+      Clear;
+      LCD_Std_Out.Put_Line("Bravo bg");
 
     end Play;
 end Game;

@@ -91,4 +91,17 @@ package body Map is
       Display.Update_Layer (1, Copy_Back => False);
    end DrawBall;
 
+   function getStartPos(M : in Map) return Point is
+   begin
+      for I in 1 .. 12 loop
+         for J in 1 .. 16 loop
+            if M(J)(I) = S then
+                 return ((I - 1) * 20 + 10, (J - 1) * 20 + 10);
+            end if;
+         end loop;
+      end loop;
+      return (0, 0);
+   end getStartPos;
+
+
 end Map;

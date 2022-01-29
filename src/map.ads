@@ -1,3 +1,4 @@
+with HAL.Bitmap; use HAL.Bitmap;
 package Map is
    -- W : Wall
    -- P : Path
@@ -7,22 +8,22 @@ package Map is
    type Row is array (1 .. 12) of TileType;
    type Map is array (1 .. 16) of Row;
 
-   M_Test : constant Map := ((P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, W, P, W, P, W, W, W, P, P, P, P),
-                             (P, W, P, W, P, P, W, P, P, P, P, P),
-                             (P, W, W, W, P, P, W, P, P, P, P, P),
-                             (P, W, P, W, P, P, W, P, P, P, P, P),
-                             (P, W, P, W, P, W, W, W, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, S, P, P, P, P, P, P, P, P, F, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P),
-                             (P, P, P, P, P, P, P, P, P, P, P, P));
+   M_Test : constant Map := ((W, W, W, W, W, W, W, W, W, W, W, W),
+                             (W, W, P, P, P, W, W, W, P, P, P, W),
+                             (W, W, P, W, P, P, W, P, P, P, P, W),
+                             (W, W, P, W, P, P, W, P, P, W, P, W),
+                             (W, W, P, W, P, P, W, P, P, W, P, W),
+                             (W, W, P, W, P, W, W, W, P, W, P, W),
+                             (W, P, P, P, P, P, P, P, P, W, P, W),
+                             (W, P, W, P, W, W, W, W, P, W, P, W),
+                             (W, P, W, P, P, W, P, P, P, W, P, W),
+                             (W, P, W, P, P, P, P, W, P, W, P, W),
+                             (W, P, W, W, W, W, W, W, W, W, P, W),
+                             (W, P, P, P, P, P, W, P, P, P, P, W),
+                             (W, W, W, W, P, P, W, W, W, P, W, W),
+                             (W, P, P, P, P, P, W, P, P, P, P, W),
+                             (W, S, P, P, P, P, W, F, P, P, P, W),
+                             (W, W, W, W, W, W, W, W, W, W, W, W));
 
    -- Check whether a TileType T is unique in a given board.
    function isUnique(M : Map; T : TileType) return Boolean with Pre => (T = S or T = F);
@@ -82,5 +83,6 @@ package Map is
    procedure DrawStart(I : in Integer; J : in Integer);
    procedure DrawFinish(I : in Integer; J : in Integer);
    procedure DrawBall(M : in Map);
+   function getStartPos(M : in Map) return Point with Pre => isUnique(M, S);
 
 end Map;
