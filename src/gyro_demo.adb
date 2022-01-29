@@ -167,7 +167,7 @@ package body gyro_demo is
 
 
          Prev_Time := Current_Time;
-         delay 0.01;
+         delay 0.1;
       end loop;
    end Gyro_Task;
 
