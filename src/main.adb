@@ -17,7 +17,6 @@ begin
    Game.Play;
 
    loop
-      --Display.Update_Layer (1, Copy_Back => True);
       delay 1.0;
    end loop;
 

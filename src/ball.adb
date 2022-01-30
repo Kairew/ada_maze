@@ -9,11 +9,11 @@ package body ball is
    end getBallPos;
    
       procedure setBallPos(pos : in Point) is
-         x : Integer := (((pos.X / 20) ) mod 12) + 1;
-         y : Integer := (((pos.Y / 20) ) mod 16) + 1;
+         x : Integer := ((((pos.X + 240)/ 20)) mod 12) + 1;
+         y : Integer := ((((pos.Y + 320)/ 20)) mod 16) + 1;
       begin
          if currMap(y)(x) /= W then
-            ballPos := ((pos.X mod 240), (pos.Y mod 320));
+            ballPos := (((pos.X + 240) mod 240), ((pos.Y + 320) mod 320));
          end if;
          if currMap(y)(x) = H then
             ballPos := getStartPos(currMap);

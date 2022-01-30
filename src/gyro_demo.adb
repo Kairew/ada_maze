@@ -145,29 +145,22 @@ package body gyro_demo is
                y_ang := y_ang + y * Float(To_Duration(Delta_Time));
             end if;
 
-         --LCD_Std_Out.Put (60, 0, Integer(x_ang)'Img & "  ");
-         --LCD_Std_Out.Put (120, 0, Integer(y_ang)'Img & "  ");
             if x_ang > 25.0 and y_ang > -20.0 and y_ang < 20.0 then
-               --LCD_Std_Out.Put(180, 0, "Down");
                ball.Ball.setBallPos((ballPos.X, ballPos.Y + 1));
             elsif x_ang < -25.0 and y_ang > -20.0 and y_ang < 20.0 then
-               --LCD_Std_Out.Put(180, 0, "Up");
                ball.Ball.setBallPos((ballPos.X, ballPos.Y - 1));
             elsif y_ang > 25.0 and x_ang > -20.0 and x_ang < 20.0 then
-               --LCD_Std_Out.Put(180, 0, "Right");
                ball.Ball.setBallPos((ballPos.X + 1, ballPos.Y));
             elsif y_ang < -25.0 and x_ang > -20.0 and x_ang < 20.0 then
-               --LCD_Std_Out.Put(180, 0, "Left");
                ball.Ball.setBallPos((ballPos.X - 1, ballPos.Y));
             else
-               --LCD_Std_Out.Put(180, 0, "Neutral");
                ball.Ball.setBallPos((ballPos.X, ballPos.Y));
             end if;
          end if;
 
 
          Prev_Time := Current_Time;
-         delay 0.05;
+         delay 0.008;
       end loop;
    end Gyro_Task;
 

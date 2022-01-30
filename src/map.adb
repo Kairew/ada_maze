@@ -89,7 +89,7 @@ package body Map is
       ballPos : Point;
    begin
       ballPos := ball.Ball.getBallPos;
-      --LCD_Std_Out.Put(60, 20, ball.Ball.getBallPos.X'Img & " " & ball.Ball.getBallPos.Y'Img);
+
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Green);
       Fill_Circle(Display.Hidden_Buffer(1).all, ballPos, 10);
       Display.Update_Layer (1, Copy_Back => False);
